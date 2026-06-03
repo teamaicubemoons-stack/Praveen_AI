@@ -54,8 +54,8 @@ After=network.target
 
 [Service]
 User=ubuntu
-WorkingDirectory=$PROJECT_ROOT/Insta AI
-ExecStart=$PROJECT_ROOT/Insta AI/.venv/bin/uvicorn app.main:app --port 8000 --host 127.0.0.1
+WorkingDirectory="$PROJECT_ROOT/Insta AI"
+ExecStart="$PROJECT_ROOT/Insta AI/.venv/bin/uvicorn" app.main:app --port 8000 --host 127.0.0.1
 Restart=always
 
 [Install]
@@ -71,8 +71,8 @@ After=network.target
 
 [Service]
 User=ubuntu
-WorkingDirectory=$PROJECT_ROOT/FB_Messenger AI
-ExecStart=$PROJECT_ROOT/FB_Messenger AI/.venv/bin/uvicorn app.main:app --port 8001 --host 127.0.0.1
+WorkingDirectory="$PROJECT_ROOT/FB_Messenger AI"
+ExecStart="$PROJECT_ROOT/FB_Messenger AI/.venv/bin/uvicorn" app.main:app --port 8001 --host 127.0.0.1
 Restart=always
 
 [Install]
