@@ -65,7 +65,7 @@ async def handle_webhook(request: Request, background_tasks: BackgroundTasks):
     obj = data.get("object")
     logger.info(f"🔎 Object type: {obj}")
     
-    if obj in ("instagram", "page"):
+    if obj == "instagram":
         for entry in data.get("entry", []):
             messaging_list = entry.get("messaging", [])
             changes_list = entry.get("changes", [])

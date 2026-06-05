@@ -4,23 +4,31 @@ Welcome to the **PraveenCo AI** project. This repository contains professional-g
 
 ## 📁 Project Structure
 
-*   **`testing/`**: Contains Pine Script strategies for TradingView.
-    *   `test_strategy.pine`: **EMA Pro V12 (Elite Edition)** - Our flagship trend-following strategy.
-*   **`Insta AI/`**: Backend services for Meta (Instagram/WhatsApp) automation (In Progress).
+* **`testing/`**: Contains Pine Script strategies for TradingView.
+  * `test_strategy.pine`: **EMA Pro V12 (Elite Edition)** - Our flagship trend-following strategy.
+* **`Insta AI/`**: Backend services for Meta (Instagram/WhatsApp) automation (In Progress).
 
 ## 🛠 Features
 
-*   **Institutional Trading Strategy**: EMA-based trend following with strict risk management.
-*   **Safety First**: Built-in Drawdown protection and Break-Even logic.
-*   **Real-time Dashboard**: Live performance tracking directly on the TradingView chart.
+* **Institutional Trading Strategy**: EMA-based trend following with strict risk management.
+* **Safety First**: Built-in Drawdown protection and Break-Even logic.
+* **Real-time Dashboard**: Live performance tracking directly on the TradingView chart.
 
 ## 🚀 Getting Started
 
-1.  Open **TradingView**.
-2.  Open the **Pine Editor**.
-3.  Copy the code from `testing/test_strategy.pine`.
-4.  Click **"Add to Chart"**.
-5.  Check the **Strategy Tester** for historical performance.
+1. Open **TradingView**.
+2. Open the **Pine Editor**.
+3. Copy the code from `testing/test_strategy.pine`.
+4. Click **"Add to Chart"**.
+5. Check the **Strategy Tester** for historical performance.
+
+   Instagram
+
+sudo journalctl -u insta_bot -f
+
+Facebook
+sudo journalctl -u fb_bot -f
 
 ---
+
 *Developed by Antigravity AI for PraveenCo.*
