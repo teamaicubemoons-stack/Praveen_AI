@@ -52,6 +52,8 @@ async def verify_webhook(
     
     logger.warning("❌ Webhook verification failed.")
     raise HTTPException(status_code=403, detail="Verification token mismatch")
+# In-memory cache to store recently processed Message IDs (mids) for deduplication
+PROCESSED_MIDS = []
 
 @router.post("/webhook")
 async def handle_webhook(request: Request, background_tasks: BackgroundTasks):
@@ -88,6 +90,17 @@ async def handle_webhook(request: Request, background_tasks: BackgroundTasks):
                         logger.info(f"⏭️ Skipping non-Instagram message. recipient_id={recipient_id}")
                         continue
 
+                    # Deduplication check by message ID (mid)
+                    mid = message_data.get("mid")
+                    if mid:
+                        if mid in PROCESSED_MIDS:
+                            logger.info(f"⏭️ Skipping duplicate message. mid={mid}")
+                            continue
+                        PROCESSED_MIDS.append(mid)
+                        # Keep cache small (last 500 message IDs)
+                        if len(PROCESSED_MIDS) > 500:
+                            PROCESSED_MIDS.pop(0)
+
                     message_text = message_data["text"]
                     logger.info(f"📩 [{obj}/messaging] Received from {sender_id}: {message_text}")
                     background_tasks.add_task(process_ai_response, sender_id, message_text)
@@ -112,6 +125,17 @@ async def handle_webhook(request: Request, background_tasks: BackgroundTasks):
                         if recipient_id and settings.INSTAGRAM_BUSINESS_ACCOUNT_ID and recipient_id != settings.INSTAGRAM_BUSINESS_ACCOUNT_ID:
                             logger.info(f"⏭️ Skipping non-Instagram message in changes. recipient_id={recipient_id}")
                             continue
+
+                        # Deduplication check by message ID (mid)
+                        mid = message_data.get("mid")
+                        if mid:
+                            if mid in PROCESSED_MIDS:
+                                logger.info(f"⏭️ Skipping duplicate message in changes. mid={mid}")
+                                continue
+                            PROCESSED_MIDS.append(mid)
+                            # Keep cache small (last 500 message IDs)
+                            if len(PROCESSED_MIDS) > 500:
+                                PROCESSED_MIDS.pop(0)
 
                         message_text = message_data["text"]
                         logger.info(f"📩 [{obj}/changes] Received from {sender_id}: {message_text}")
