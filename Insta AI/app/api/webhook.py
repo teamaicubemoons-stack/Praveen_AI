@@ -82,6 +82,12 @@ async def handle_webhook(request: Request, background_tasks: BackgroundTasks):
                     continue
                 
                 if message_data.get("text") and sender_id:
+                    recipient_id = messaging_event.get("recipient", {}).get("id")
+                    # Ignore messages meant for Facebook Page (only process Instagram Business Account)
+                    if recipient_id and settings.INSTAGRAM_BUSINESS_ACCOUNT_ID and recipient_id != settings.INSTAGRAM_BUSINESS_ACCOUNT_ID:
+                        logger.info(f"⏭️ Skipping non-Instagram message. recipient_id={recipient_id}")
+                        continue
+
                     message_text = message_data["text"]
                     logger.info(f"📩 [{obj}/messaging] Received from {sender_id}: {message_text}")
                     background_tasks.add_task(process_ai_response, sender_id, message_text)
@@ -101,6 +107,12 @@ async def handle_webhook(request: Request, background_tasks: BackgroundTasks):
                         continue
                     
                     if message_data.get("text") and sender_id:
+                        recipient_id = value.get("recipient", {}).get("id")
+                        # Ignore messages meant for Facebook Page
+                        if recipient_id and settings.INSTAGRAM_BUSINESS_ACCOUNT_ID and recipient_id != settings.INSTAGRAM_BUSINESS_ACCOUNT_ID:
+                            logger.info(f"⏭️ Skipping non-Instagram message in changes. recipient_id={recipient_id}")
+                            continue
+
                         message_text = message_data["text"]
                         logger.info(f"📩 [{obj}/changes] Received from {sender_id}: {message_text}")
                         background_tasks.add_task(process_ai_response, sender_id, message_text)

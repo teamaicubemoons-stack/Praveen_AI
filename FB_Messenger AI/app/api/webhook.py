@@ -75,6 +75,12 @@ async def handle_webhook(request: Request, background_tasks: BackgroundTasks):
                     continue
                     
                 if message_data.get("text") and sender_id:
+                    recipient_id = messaging_event.get("recipient", {}).get("id")
+                    # Ignore messages meant for Instagram Business Account
+                    if recipient_id and settings.PAGE_ID and recipient_id != settings.PAGE_ID:
+                        logger.info(f"⏭️ Skipping non-Messenger message. recipient_id={recipient_id}")
+                        continue
+
                     message_text = message_data["text"]
                     logger.info(f"📩 [Messenger] Received from {sender_id}: {message_text}")
                     background_tasks.add_task(process_ai_response, sender_id, message_text)
